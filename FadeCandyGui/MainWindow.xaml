@@ -10,14 +10,10 @@
         <DockPanel LastChildFill="False">
             <DockPanel LastChildFill="False" DockPanel.Dock="Top" Margin="0,20,0,0">
                 <Grid DockPanel.Dock="Top">
-                    <Image x:Name="Image" HorizontalAlignment="Center" Width="267"
+                    <Image x:Name="LogoImage" HorizontalAlignment="Center" Width="267"
                            Source="Images/Stranger-Things-Logo.png" Margin="0" VerticalAlignment="Center" />
-                    <Image x:Name="ImageBlur" HorizontalAlignment="Center" Width="267"
-                           Source="Images/Stranger-Things-Logo.png" Margin="0" VerticalAlignment="Center">
-                        <Image.Effect>
-                            <BlurEffect />
-                        </Image.Effect>
-                    </Image>
+                    <Image x:Name="LogoImageBlurLayer" HorizontalAlignment="Center" Width="267"
+                        Source="Images/Stranger-Things-Logo.png" Margin="125.7,0" VerticalAlignment="Center" />
                 </Grid>
             </DockPanel>
             <DockPanel LastChildFill="False" DockPanel.Dock="Top">
@@ -79,9 +75,6 @@
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Top" Margin="0,-4,0,0" HorizontalAlignment="Center">
                     <Image x:Name="ConnectionStatusLedImage" Height="20" Width="20" DockPanel.Dock="Top" Margin="0,0,0,15" Source="RedCircle20px.png" Opacity="0.35">
-                        <Image.Effect>
-                            <BlurEffect/>
-                        </Image.Effect>
                     </Image>
                     <Button x:Name="ConnectButton" Content="Connect" DockPanel.Dock="Top" HorizontalAlignment="Center" Background="#FF101010" Foreground="#FFB4B4B4" Padding="3" VerticalAlignment="Top" Click="ConnectButton_Click" />
                 </DockPanel>
