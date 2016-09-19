@@ -12,7 +12,7 @@ namespace OpenPixelControl
         {
             try
             {
-                OpcClient opcClient = new OpcClient("127.0.0.1");
+                OpcClient opcClient = new OpcClient();
 
                 //var pixels = new List<OpcClient.Pixel>();
                 //pixels.Add(new OpcClient.Pixel(255, 0, 0));

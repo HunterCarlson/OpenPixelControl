@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Text;
 
 namespace OpenPixelControl
 {
     public class OpcClient
     {
-        public OpcClient(string server, int port = 7890)
+        public OpcClient(string server = "127.0.0.1", int port = 7890)
         {
             Server = server;
             Port = port;
@@ -95,7 +96,8 @@ namespace OpenPixelControl
 
                 Console.WriteLine("Channel: {0} \tSent: {1} pixels", data[0], (data.Length - 4)/3);
 
-                //// Receive the TcpServer.response.
+                //OpenPixelControl doesn't have a response over tcp???
+                // Receive the TcpServer.response.
 
                 //// Buffer to store the response bytes.
                 //data = new byte[256];
@@ -122,25 +124,6 @@ namespace OpenPixelControl
             }
         }
 
-        public class Pixel
-        {
-            public Pixel(int red, int blue, int green)
-            {
-                Red = (byte) red;
-                Blue = (byte) blue;
-                Green = (byte) green;
-            }
 
-            public Pixel(byte red, byte blue, byte green)
-            {
-                Red = red;
-                Blue = blue;
-                Green = green;
-            }
-
-            public byte Red { get; }
-            public byte Green { get; }
-            public byte Blue { get; }
-        }
     }
 }
