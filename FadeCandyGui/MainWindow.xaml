@@ -1,0 +1,92 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pc="http://schemas.microsoft.com/prototyping/2010/controls" x:Class="FadeCandyGui.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="525" Background="Black">
+    <Grid>
+        <DockPanel LastChildFill="False">
+            <DockPanel LastChildFill="False" DockPanel.Dock="Top" Margin="0,20,0,0">
+                <Grid DockPanel.Dock="Top">
+                    <Image x:Name="Image" HorizontalAlignment="Center" Width="267"
+                           Source="Images/Stranger-Things-Logo.png" Margin="0" VerticalAlignment="Center" />
+                    <Image x:Name="ImageBlur" HorizontalAlignment="Center" Width="267"
+                           Source="Images/Stranger-Things-Logo.png" Margin="0" VerticalAlignment="Center">
+                        <Image.Effect>
+                            <BlurEffect />
+                        </Image.Effect>
+                    </Image>
+                </Grid>
+            </DockPanel>
+            <DockPanel LastChildFill="False" DockPanel.Dock="Top">
+                <TextBox x:Name="MessageTextBox" HorizontalAlignment="Center" Margin="0,20,0,0" TextWrapping="Wrap"
+                         Text="TextBox" VerticalAlignment="Center" Width="400" TextAlignment="Center" Foreground="Red"
+                         Background="#FF101010" FontSize="16" DockPanel.Dock="Top">
+                    <TextBox.BorderBrush>
+                        <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                            <GradientStop Color="#FFABADB3" Offset="0.05" />
+                            <GradientStop Color="#FFE2E3EA" Offset="0.07" />
+                            <GradientStop Color="#FFE8E8E8" Offset="1" />
+                        </LinearGradientBrush>
+                    </TextBox.BorderBrush>
+                    <TextBox.Effect>
+                        <BlurEffect Radius="2" />
+                    </TextBox.Effect>
+                </TextBox>
+            </DockPanel>
+            <DockPanel LastChildFill="False" Margin="0,10,0,0" DockPanel.Dock="Top">
+                <Button x:Name="SendMessageButton" Content="Send Message" Background="#FF101010" Foreground="#FFB4B4B4"
+                        d:LayoutOverrides="TopPosition, BottomPosition" DockPanel.Dock="Top"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1" BorderThickness="0"
+                        Padding="3,2,3,3" Click="SendMessageButton_Click" />
+            </DockPanel>
+            <DockPanel LastChildFill="False" Margin="0,20,0,0" DockPanel.Dock="Top">
+                <DockPanel LastChildFill="False" Margin="50,0,0,0">
+                    <TextBox x:Name="OnDurationTextBox" TextWrapping="Wrap"
+                             Text="{Binding Value, ElementName=OnDurationSlider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Height="22.637" Width="88"
+                             DockPanel.Dock="Top" HorizontalAlignment="Center" Background="#FF101010"
+                             BorderBrush="#FF707070" TextAlignment="Center" Foreground="#FFB4B4B4" MaxLength="4"/>
+                    <Slider x:Name="OnDurationSlider" VerticalAlignment="Top" Width="150" DockPanel.Dock="Top"
+                            HorizontalAlignment="Center" BorderThickness="0,5,0,0" ValueChanged="OnDurationSlider_ValueChanged" IsSnapToTickEnabled="True" TickFrequency="0.01" />
+                    <Label x:Name="Label" Content="On Duration" Foreground="#FFB4B4B4" DockPanel.Dock="Top"
+                           HorizontalAlignment="Center" />
+                </DockPanel>
+                <DockPanel LastChildFill="False" DockPanel.Dock="Right" Margin="0,0,50,0">
+                    <TextBox x:Name="TextBox2" Height="23" TextWrapping="Wrap"
+                             Text="{Binding Value, ElementName=OffDurationSlider, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Width="88"
+                             Background="#FF101010" Foreground="#FFB4B4B4" BorderBrush="#FF707070" DockPanel.Dock="Top"
+
+                             HorizontalAlignment="Center" TextAlignment="Center" MaxLength="4" />
+                    <Slider x:Name="OffDurationSlider" HorizontalAlignment="Center" VerticalAlignment="Top" Width="150"
+                            Cursor="No" d:LayoutOverrides="LeftPosition, RightPosition" DockPanel.Dock="Top"
+                            BorderThickness="0,5,0,0" ValueChanged="OffDurationSlider_ValueChanged" TickFrequency="0.01" IsSnapToTickEnabled="True" />
+                    <Label x:Name="Label1" Content="Off Duration" Foreground="#FFB4B4B4" DockPanel.Dock="Top"
+                           HorizontalAlignment="Center" />
+                </DockPanel>
+            </DockPanel>
+            <DockPanel LastChildFill="False" DockPanel.Dock="Top" Margin="0,20,0,0">
+                <DockPanel LastChildFill="False" Margin="50,0,0,0">
+                    <TextBox x:Name="ServerTextBox" Height="23" TextWrapping="Wrap" Text="Server IP" Width="120" DockPanel.Dock="Top" BorderBrush="#FF707070" TextAlignment="Center" Background="#FF101010" Foreground="#FFB4B4B4"/>
+                    <Label x:Name="label" Content="Server" DockPanel.Dock="Top" Foreground="#FFB4B4B4" HorizontalAlignment="Center"/>
+                </DockPanel>
+                <DockPanel LastChildFill="False" DockPanel.Dock="Right" Margin="0,0,50,0">
+                    <TextBox x:Name="PortTextBox" Height="23" TextWrapping="Wrap" Text="Port#" Width="120" DockPanel.Dock="Top" BorderBrush="#FF707070" TextAlignment="Center" Background="#FF101010" Foreground="#FFB4B4B4"/>
+                    <Label x:Name="label1" Content="Port" DockPanel.Dock="Top" HorizontalAlignment="Center" Foreground="#FFB4B4B4"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,-4,0,0" HorizontalAlignment="Center">
+                    <Image x:Name="ConnectionStatusLedImage" Height="20" Width="20" DockPanel.Dock="Top" Margin="0,0,0,15" Source="RedCircle20px.png" Opacity="0.35">
+                        <Image.Effect>
+                            <BlurEffect/>
+                        </Image.Effect>
+                    </Image>
+                    <Button x:Name="ConnectButton" Content="Connect" DockPanel.Dock="Top" HorizontalAlignment="Center" Background="#FF101010" Foreground="#FFB4B4B4" Padding="3" VerticalAlignment="Top" Click="ConnectButton_Click" />
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+
+    </Grid>
+</Window>
