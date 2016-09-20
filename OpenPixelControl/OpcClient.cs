@@ -93,7 +93,7 @@ namespace OpenPixelControl
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
 
-                Console.WriteLine("Channel: {0} \tSent: {1} pixels", data[0], (data.Length - 4)/3);
+                Console.WriteLine("Channel: {0} \tSent: {1} bytes", data[0], data.Length);
 
                 //OpenPixelControl doesn't have a response over tcp???
                 // Receive the TcpServer.response.
