@@ -16,7 +16,7 @@ namespace OpenPixelControl
         public string Server { get; set; }
         public int Port { get; set; }
 
-        public void WritePixels(List<Pixel> pixels, int channel = 0)
+        public void WriteFrame(List<Pixel> pixels, int channel = 0)
         {
             var lenHighByte = pixels.Count*3/256;
             var lenLowByte = pixels.Count*3%256;
@@ -43,9 +43,22 @@ namespace OpenPixelControl
 
         public void TurnOffAllPixels()
         {
-            var pixels = Enumerable.Range(0, OpcConstants.FadeCandy.MaxPixels).Select(i => OpcConstants.OffPixel).ToList();
-            WritePixels(pixels);
+            var frame = SingleColorFrame(OpcConstants.DarkPixel);
+            WriteFrame(frame);
         }
+
+        public List<Pixel> SingleColorFrame(int red, int green, int blue)
+        {
+            var frame = Enumerable.Range(0, OpcConstants.FadeCandy.MaxPixels).Select(i => new Pixel(red, green, blue)).ToList();
+            return frame;
+        }
+
+        public List<Pixel> SingleColorFrame(Pixel pixel)
+        {
+            var frame = Enumerable.Range(0, OpcConstants.FadeCandy.MaxPixels).Select(i => pixel).ToList();
+            return frame;
+        }
+
 
         public void SetStatusLed(bool ledStatus)
         {

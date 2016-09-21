@@ -25,7 +25,7 @@ namespace OpenPixelControl
 
                 var frame = LetterWall.CreateLetterFrame('A');
 
-                opcClient.WritePixels(frame);
+                opcClient.WriteFrame(frame);
 
                 Thread.Sleep(1000);
                 opcClient.TurnOffAllPixels();

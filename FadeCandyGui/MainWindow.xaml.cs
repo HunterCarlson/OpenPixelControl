@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
@@ -38,6 +40,14 @@ namespace FadeCandyGui
         {
             InitializeComponent();
 
+            //init text boxes to default server values
+            ServerTextBox.Text = "127.0.0.1";
+            PortTextBox.Text = OpcConstants.DefaultPort.ToString();
+
+            // init sliders
+            OnDurationSlider.Value = 1.0;
+            OffDurationSlider.Value = 1.0;
+
             //set opacity on lights to off value
             ConnectionStatusLedImage.Opacity = LedOffOpacity;
             LogoImage.Opacity = LogoOffOpacity;
@@ -58,6 +68,17 @@ namespace FadeCandyGui
             //convert string chars to light IDs
             //make commands
             //send commands 
+
+            // TODO: do in new thread to not block ui
+            foreach (char c in MessageTextBox.Text.ToUpper())
+            {
+                var frame = LetterWall.CreateLetterFrame(c);
+                _opcClient.WriteFrame(frame);
+                Thread.Sleep((int) (OnDurationSlider.Value * 1000));
+                _opcClient.TurnOffAllPixels();
+                Thread.Sleep((int)(OffDurationSlider.Value * 1000));
+            }
+
         }
 
         private void OnDurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -91,8 +112,35 @@ namespace FadeCandyGui
 
                     _opcClient.Server = ServerTextBox.Text;
                     _opcClient.Port = Convert.ToInt32(PortTextBox.Text);
-                }
 
+
+                    // blink leds on connect
+                    // do in new thread to not block UI
+                    // http://stackoverflow.com/questions/363377/how-do-i-run-a-simple-bit-of-code-in-a-new-thread
+                    var backgroundWorker = new BackgroundWorker();
+
+                    backgroundWorker.DoWork += delegate(object o, DoWorkEventArgs args)
+                    {
+                        var b = o as BackgroundWorker;
+
+                        var frame = _opcClient.SingleColorFrame(100, 100, 100);
+
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                    };
+
+                    backgroundWorker.RunWorkerCompleted += delegate { Debug.WriteLine("Blink done"); };
+                    backgroundWorker.RunWorkerAsync();
+                }
 
                 //update UI
                 UpdateUiForConnectButtonClick();
@@ -116,8 +164,8 @@ namespace FadeCandyGui
                 ConnectButton.Content = "Connect";
 
                 //disable server and port text boxes
-                ServerTextBox.IsEnabled = false;
-                PortTextBox.IsEnabled = false;
+                ServerTextBox.IsEnabled = true;
+                PortTextBox.IsEnabled = true;
 
                 //create animations
                 var ledBlurRadiusAnimation = new DoubleAnimation(LedBlurRadius, 0,
@@ -144,8 +192,8 @@ namespace FadeCandyGui
                 ConnectButton.Content = "Disconnect";
 
                 //enable server and port text boxes
-                ServerTextBox.IsEnabled = true;
-                PortTextBox.IsEnabled = true;
+                ServerTextBox.IsEnabled = false;
+                PortTextBox.IsEnabled = false;
 
                 //create animations
                 var ledBlurRadiusAnimation = new DoubleAnimation(0, LedBlurRadius,

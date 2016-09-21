@@ -61,7 +61,7 @@ namespace OpenPixelControl
                 }
                 else
                 {
-                    frame.Add(OpcConstants.OffPixel);
+                    frame.Add(OpcConstants.DarkPixel);
                 }
             }
             return frame;
