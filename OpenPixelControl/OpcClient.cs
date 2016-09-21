@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Sockets;
 
 namespace OpenPixelControl
 {
     public class OpcClient
     {
+        private const int MaxPixels = 512;
+
         public OpcClient(string server = "127.0.0.1", int port = 7890)
         {
             Server = server;
@@ -40,11 +43,50 @@ namespace OpenPixelControl
             SendMessage(message.ToArray());
         }
 
+        public void TurnOffAllPixels()
+        {
+            var offPixel = new Pixel(0, 0, 0);
+            var pixels = Enumerable.Range(0, MaxPixels).Select(i => offPixel).ToList();
+            WritePixels(pixels);
+        }
+
         public void SetStatusLed(bool ledStatus)
         {
             var message = new List<byte>();
 
             // build header
+            BuildFirmwareConfigHeader(message);
+
+            byte configByte;
+            if (ledStatus)
+                configByte = Convert.ToByte("00001100", 2);
+            else
+                configByte = Convert.ToByte("00000000", 2);
+
+            message.Add(configByte);
+
+            //send data
+            SendMessage(message.ToArray());
+        }
+
+        public void DisableDitheringAndInterpolation()
+        {
+            var message = new List<byte>();
+
+            // build header
+            BuildFirmwareConfigHeader(message);
+
+            // config data to disable dithering and keyframe interpolation
+            var configByte = Convert.ToByte("00000011", 2);
+
+            message.Add(configByte);
+
+            //send data
+            SendMessage(message.ToArray());
+        }
+
+        private static void BuildFirmwareConfigHeader(List<byte> message)
+        {
             // channel
             message.Add(0x00);
             // command
@@ -58,26 +100,9 @@ namespace OpenPixelControl
             // sysex ID
             message.Add(0x00);
             message.Add(0x02);
-
-            byte configByte;
-            if (ledStatus)
-            {
-                // config data to turn on led
-                configByte = Convert.ToByte("00001100", 2);
-            }
-            else
-            {
-                // config data to turn off led and set back to show usb activity
-                configByte = Convert.ToByte("00000000", 2);
-            }
-
-            message.Add(configByte);
-
-            //send data
-            SendMessage(message.ToArray());
         }
 
-        public void SendMessage(byte[] data)
+        private void SendMessage(byte[] data)
         {
             try
             {

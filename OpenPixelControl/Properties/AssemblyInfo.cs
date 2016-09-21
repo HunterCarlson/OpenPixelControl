@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("OpenPixelControl")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("General Motors")]
+[assembly: AssemblyCompany("Zorink")]
 [assembly: AssemblyProduct("OpenPixelControl")]
-[assembly: AssemblyCopyright("Copyright © General Motors 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

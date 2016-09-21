@@ -50,7 +50,6 @@ namespace FadeCandyGui
             ConnectionStatusLedImage.Effect = _ledBlurEffect;
             LogoImageBlurLayer.Effect = _logoBlurEffect;
 
-
             _opcClient = new OpcClient();
         }
 

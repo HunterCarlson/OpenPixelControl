@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("FadeCandyGui")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("General Motors")]
+[assembly: AssemblyCompany("Zorink")]
 [assembly: AssemblyProduct("FadeCandyGui")]
-[assembly: AssemblyCopyright("Copyright © General Motors 2016")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
