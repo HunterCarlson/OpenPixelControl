@@ -7,9 +7,7 @@ namespace OpenPixelControl
 {
     public class OpcClient
     {
-        private const int MaxPixels = 512;
-
-        public OpcClient(string server = "127.0.0.1", int port = 7890)
+        public OpcClient(string server = "127.0.0.1", int port = OpcConstants.DefaultPort)
         {
             Server = server;
             Port = port;
@@ -45,8 +43,7 @@ namespace OpenPixelControl
 
         public void TurnOffAllPixels()
         {
-            var offPixel = new Pixel(0, 0, 0);
-            var pixels = Enumerable.Range(0, MaxPixels).Select(i => offPixel).ToList();
+            var pixels = Enumerable.Range(0, OpcConstants.FadeCandy.MaxPixels).Select(i => OpcConstants.OffPixel).ToList();
             WritePixels(pixels);
         }
 

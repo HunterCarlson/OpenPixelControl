@@ -111,6 +111,11 @@
   <ItemGroup>
     <Resource Include="RedCircle20px.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Ref Images\row 1 alphaWall lights.gif" />
+    <Resource Include="Ref Images\row 2 alphaWall lights.gif" />
+    <Resource Include="Ref Images\row 3 alphaWall lights.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

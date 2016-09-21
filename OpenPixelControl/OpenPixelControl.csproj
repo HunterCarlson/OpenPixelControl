@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LetterWall.cs" />
     <Compile Include="OpcClient.cs" />
+    <Compile Include="OpcConstants.cs" />
     <Compile Include="OpcWebSocketClient.cs" />
     <Compile Include="Pixel.cs" />
     <Compile Include="Program.cs" />

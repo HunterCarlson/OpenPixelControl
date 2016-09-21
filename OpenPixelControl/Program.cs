@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace OpenPixelControl
 {
@@ -14,16 +15,19 @@ namespace OpenPixelControl
 
                 opcClient.DisableDitheringAndInterpolation();
 
-                var pixels = new List<Pixel>();
-                pixels.Add(new Pixel(255, 0, 0));
-                pixels.Add(new Pixel(0, 255, 0));
-                pixels.Add(new Pixel(0, 0, 255));
-                pixels.Add(new Pixel(255, 0, 0));
-                pixels.Add(new Pixel(0, 255, 0));
-                pixels.Add(new Pixel(0, 0, 255));
+                //var frame = new List<Pixel>();
+                //pixels.Add(new Pixel(255, 0, 0));
+                //pixels.Add(new Pixel(0, 255, 0));
+                //pixels.Add(new Pixel(0, 0, 255));
+                //pixels.Add(new Pixel(255, 0, 0));
+                //pixels.Add(new Pixel(0, 255, 0));
+                //pixels.Add(new Pixel(0, 0, 255));
 
-                opcClient.WritePixels(pixels);
+                var frame = LetterWall.CreateLetterFrame('A');
 
+                opcClient.WritePixels(frame);
+
+                Thread.Sleep(1000);
                 opcClient.TurnOffAllPixels();
 
 
