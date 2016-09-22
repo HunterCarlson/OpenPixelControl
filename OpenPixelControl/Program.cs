@@ -15,15 +15,12 @@ namespace OpenPixelControl
 
                 opcClient.DisableDitheringAndInterpolation();
 
-                //var frame = new List<Pixel>();
-                //pixels.Add(new Pixel(255, 0, 0));
-                //pixels.Add(new Pixel(0, 255, 0));
-                //pixels.Add(new Pixel(0, 0, 255));
-                //pixels.Add(new Pixel(255, 0, 0));
-                //pixels.Add(new Pixel(0, 255, 0));
-                //pixels.Add(new Pixel(0, 0, 255));
+                var frame = new List<Pixel>();
+                frame.Add(new Pixel(255, 0, 0));
+                frame.Add(new Pixel(0, 255, 0));
+                frame.Add(new Pixel(0, 0, 255));
 
-                var frame = LetterWall.CreateLetterFrame('A');
+                //var frame = LetterWall.CreateLetterFrame('A');
 
                 opcClient.WriteFrame(frame);
 

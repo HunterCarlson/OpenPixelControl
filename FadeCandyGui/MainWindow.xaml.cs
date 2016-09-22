@@ -123,7 +123,7 @@ namespace FadeCandyGui
                     {
                         var b = o as BackgroundWorker;
 
-                        var frame = _opcClient.SingleColorFrame(100, 100, 100);
+                        var frame = _opcClient.SingleColorFrame(200, 0, 0);
 
                         //_opcClient.DisableDitheringAndInterpolation();
 

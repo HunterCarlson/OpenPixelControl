@@ -32,8 +32,10 @@ namespace OpenPixelControl
             // add pixel data
             foreach (var pixel in pixels)
             {
-                message.Add(pixel.Red);
+                // bad string of LEDs or is the data swapped???
+                // shoud be R G B not G R B
                 message.Add(pixel.Green);
+                message.Add(pixel.Red);
                 message.Add(pixel.Blue);
             }
 
@@ -120,7 +122,7 @@ namespace OpenPixelControl
                 // Note, for this client to work you need to have a TcpServer 
                 // connected to the same address as specified by the server, port
                 // combination.
-                var tcpClient = new TcpClient(Server, Port);
+                var tcpClient = new TcpClient(Server, Port) {NoDelay = true};
 
                 // Get a client stream for reading and writing.
                 var stream = tcpClient.GetStream();
