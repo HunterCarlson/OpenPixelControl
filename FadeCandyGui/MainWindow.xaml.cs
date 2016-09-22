@@ -125,6 +125,8 @@ namespace FadeCandyGui
 
                         var frame = _opcClient.SingleColorFrame(100, 100, 100);
 
+                        //_opcClient.DisableDitheringAndInterpolation();
+
                         _opcClient.WriteFrame(frame);
                         Thread.Sleep(500);
                         _opcClient.TurnOffAllPixels();
