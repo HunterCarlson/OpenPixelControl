@@ -13,7 +13,8 @@ namespace OpenPixelControl
                 var opcClient = new OpcClient();
                 //OpcWebSocketClient opcWebSocketClient = new OpcWebSocketClient();
 
-                opcClient.DisableDitheringAndInterpolation();
+                // turn off dithering and interpolation
+                opcClient.SetDitheringAndInterpolation(false);
 
                 var frame = new List<Pixel>();
                 frame.Add(new Pixel(255, 0, 0));

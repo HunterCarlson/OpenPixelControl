@@ -119,25 +119,28 @@ namespace FadeCandyGui
                     // http://stackoverflow.com/questions/363377/how-do-i-run-a-simple-bit-of-code-in-a-new-thread
                     var backgroundWorker = new BackgroundWorker();
 
-                    backgroundWorker.DoWork += delegate(object o, DoWorkEventArgs args)
+                    backgroundWorker.DoWork += delegate
                     {
-                        var b = o as BackgroundWorker;
+                        _opcClient.SetDitheringAndInterpolation(true);
 
                         var frame = _opcClient.SingleColorFrame(200, 0, 0);
 
-                        //_opcClient.DisableDitheringAndInterpolation();
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
+                        _opcClient.WriteFrame(frame);
+                        Thread.Sleep(500);
+                        _opcClient.TurnOffAllPixels();
+                        Thread.Sleep(500);
 
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
+                        _opcClient.SetDitheringAndInterpolation(false);
                     };
 
                     backgroundWorker.RunWorkerCompleted += delegate { Debug.WriteLine("Blink done"); };

@@ -81,15 +81,21 @@ namespace OpenPixelControl
             SendMessage(message.ToArray());
         }
 
-        public void DisableDitheringAndInterpolation()
+        public void SetDitheringAndInterpolation(bool setMode)
         {
             var message = new List<byte>();
 
             // build header
             BuildFirmwareConfigHeader(message);
 
-            // config data to disable dithering and keyframe interpolation
-            var configByte = Convert.ToByte("00000011", 2);
+            // config data to defaults
+            var configByte = Convert.ToByte("000000", 2);
+
+            if (!setMode)
+            {
+                // config data to disable dithering and keyframe interpolation
+                configByte = Convert.ToByte("00000011", 2);
+            }
 
             message.Add(configByte);
 
