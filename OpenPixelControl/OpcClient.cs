@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
 
@@ -52,6 +53,12 @@ namespace OpenPixelControl
         public List<Pixel> SingleColorFrame(int red, int green, int blue)
         {
             var frame = Enumerable.Range(0, OpcConstants.FadeCandy.MaxPixels).Select(i => new Pixel(red, green, blue)).ToList();
+            return frame;
+        }
+
+        public List<Pixel> SingleColorFrame(Color color)
+        {
+            var frame = SingleColorFrame(color.R, color.G, color.B);
             return frame;
         }
 

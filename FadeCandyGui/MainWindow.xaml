@@ -56,19 +56,18 @@
             </DockPanel>
             <DockPanel Margin="0,10,0,0"
                        DockPanel.Dock="Top"
-                       LastChildFill="False">
+                       LastChildFill="False" HorizontalAlignment="Center">
                 <Button x:Name="SendMessageButton"
-                        Margin="1"
-                        HorizontalAlignment="Center"
+                        Margin="1,1,10,1"
                         VerticalAlignment="Center"
                         Background="#FF101010"
                         BorderThickness="0"
                         Click="SendMessageButton_Click"
                         Content="Send Message"
-                        DockPanel.Dock="Top"
                         Foreground="#FFB4B4B4"
                         Padding="3,2,3,3"
-                        d:LayoutOverrides="TopPosition, BottomPosition" />
+                        d:LayoutOverrides="TopPosition, BottomPosition" HorizontalAlignment="Center" />
+                <Button x:Name="stopButton" Content="Stop" Margin="1" Background="Black" Foreground="#FFB4B4B4" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="3,2,3,3" Click="stopButton_Click"/>
             </DockPanel>
             <DockPanel Margin="0,20,0,0"
                        DockPanel.Dock="Top"
@@ -127,7 +126,6 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             BorderThickness="0,5,0,0"
-                            Cursor="No"
                             DockPanel.Dock="Top"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.01"

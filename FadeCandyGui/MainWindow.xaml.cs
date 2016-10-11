@@ -1,11 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using OpenPixelControl;
+
 
 namespace FadeCandyGui
 {
@@ -27,14 +30,18 @@ namespace FadeCandyGui
 
 
         private readonly BlurEffect _ledBlurEffect;
+
+        private readonly LetterWall _letterWall;
         private readonly BlurEffect _logoBlurEffect;
         private readonly OpcClient _opcClient;
+        private CancellationTokenSource _cancellationTokenSource;
         private double _offDuration;
         private double _onDuration;
         private int _port;
 
         private bool _prevConnectionState;
         private string _server;
+
 
         public MainWindow()
         {
@@ -61,6 +68,8 @@ namespace FadeCandyGui
             LogoImageBlurLayer.Effect = _logoBlurEffect;
 
             _opcClient = new OpcClient();
+
+            _letterWall = new LetterWall();
         }
 
         private void SendMessageButton_Click(object sender, RoutedEventArgs e)
@@ -69,16 +78,29 @@ namespace FadeCandyGui
             //make commands
             //send commands 
 
-            // TODO: do in new thread to not block ui
-            foreach (char c in MessageTextBox.Text.ToUpper())
-            {
-                var frame = LetterWall.CreateLetterFrame(c);
-                _opcClient.WriteFrame(frame);
-                Thread.Sleep((int) (OnDurationSlider.Value * 1000));
-                _opcClient.TurnOffAllPixels();
-                Thread.Sleep((int)(OffDurationSlider.Value * 1000));
-            }
+            //do in new thread to not block ui
+            //https://blogs.msdn.microsoft.com/csharpfaq/2010/07/19/parallel-programming-task-cancellation/
+            //http://blog.stephencleary.com/2012/02/async-and-await.html
 
+            //get UI values outside of task
+            var message = MessageTextBox.Text.ToUpper();
+            var onDuration = OnDurationSlider.Value*1000;
+            var offDuration = OffDurationSlider.Value*1000;
+
+            _cancellationTokenSource = new CancellationTokenSource();
+            var token = _cancellationTokenSource.Token;
+
+            Task.Run(async () =>
+            {
+                foreach (var c in message)
+                {
+                    var frame = _letterWall.CreateLetterFrame(c);
+                    _opcClient.WriteFrame(frame);
+                    await Task.Delay((int) onDuration, token);
+                    _opcClient.TurnOffAllPixels();
+                    await Task.Delay((int) offDuration, token);
+                }
+            }, token);
         }
 
         private void OnDurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -217,6 +239,15 @@ namespace FadeCandyGui
                 LogoImageBlurLayer.BeginAnimation(OpacityProperty, logoOpacityAnimation);
                 LogoImage.BeginAnimation(OpacityProperty, logoOpacityAnimation);
             }
+        }
+
+        private void stopButton_Click(object sender, RoutedEventArgs e)
+        {
+            //cancel current animation thread
+            _cancellationTokenSource.Cancel();
+            //set all leds to off - do it twice to bypass interpolation
+            _opcClient.TurnOffAllPixels();
+            _opcClient.TurnOffAllPixels();
         }
     }
 }

@@ -4,29 +4,29 @@ using System.Threading;
 
 namespace OpenPixelControl
 {
-    internal class Program
+    internal static class Procgram
     {
         public static int Main(string[] args)
         {
             try
             {
                 var opcClient = new OpcClient();
-                //OpcWebSocketClient opcWebSocketClient = new OpcWebSocketClient();
 
                 // turn off dithering and interpolation
                 opcClient.SetDitheringAndInterpolation(false);
 
                 var frame = new List<Pixel>();
-                frame.Add(new Pixel(255, 0, 0));
-                frame.Add(new Pixel(0, 255, 0));
-                frame.Add(new Pixel(0, 0, 255));
+                frame.Add(Pixel.RedPixel());
+                frame.Add(Pixel.YellowPixel());
+                frame.Add(Pixel.GreenPixel());
+                frame.Add(Pixel.BluePixel());
 
                 //var frame = LetterWall.CreateLetterFrame('A');
 
                 opcClient.WriteFrame(frame);
 
-                Thread.Sleep(1000);
-                opcClient.TurnOffAllPixels();
+                //Thread.Sleep(5000);
+                //opcClient.TurnOffAllPixels();
 
 
                 //opcClient.SetStatusLed(false);

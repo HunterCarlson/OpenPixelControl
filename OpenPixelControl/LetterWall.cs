@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenPixelControl
 {
-
     // TODO: move to GUI project when done with console testing
     // belongs with StrangerThings project, not OPC
     public class LetterWall
@@ -43,21 +43,25 @@ namespace OpenPixelControl
             {'Z', 24}
         };
 
-        public static int GetLetterIndex(char c)
+        private readonly Random _rng = new Random();
+
+        private static int GetLetterIndex(char c)
         {
             return LetterIndexMap[c];
         }
 
-        public static List<Pixel> CreateLetterFrame(char c)
+        public List<Pixel> CreateLetterFrame(char c)
         {
-            List<Pixel> frame = new List<Pixel>();
-            int letterIndex = GetLetterIndex(c);
+            var frame = new List<Pixel>();
 
-            foreach (int i in Enumerable.Range(0,LedStrandLen))
+            var letterIndex = GetLetterIndex(c);
+
+            foreach (var i in Enumerable.Range(0, LedStrandLen))
             {
                 if (i == letterIndex)
                 {
-                    frame.Add(new Pixel(100, 100, 100));
+                    var pixel = Pixel.PixelFromHsv(_rng.NextDouble()*360);
+                    frame.Add(pixel);
                 }
                 else
                 {
