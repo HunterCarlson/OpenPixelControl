@@ -67,7 +67,7 @@
                         Foreground="#FFB4B4B4"
                         Padding="3,2,3,3"
                         d:LayoutOverrides="TopPosition, BottomPosition" HorizontalAlignment="Center" />
-                <Button x:Name="stopButton" Content="Stop" Margin="1" Background="Black" Foreground="#FFB4B4B4" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="3,2,3,3" Click="stopButton_Click"/>
+                <Button x:Name="StopButton" Content="Stop" Margin="1" Background="Black" Foreground="#FFB4B4B4" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="3,2,3,3" Click="stopButton_Click"/>
             </DockPanel>
             <DockPanel Margin="0,20,0,0"
                        DockPanel.Dock="Top"
@@ -95,8 +95,7 @@
                             BorderThickness="0,5,0,0"
                             DockPanel.Dock="Top"
                             IsSnapToTickEnabled="True"
-                            TickFrequency="0.01"
-                            ValueChanged="OnDurationSlider_ValueChanged" />
+                            TickFrequency="0.01" Maximum="5"/>
                     <Label x:Name="Label"
                            HorizontalAlignment="Center"
                            Content="On Duration"
@@ -129,8 +128,7 @@
                             DockPanel.Dock="Top"
                             IsSnapToTickEnabled="True"
                             TickFrequency="0.01"
-                            ValueChanged="OffDurationSlider_ValueChanged"
-                            d:LayoutOverrides="LeftPosition, RightPosition" />
+                            d:LayoutOverrides="LeftPosition, RightPosition" Maximum="5" />
                     <Label x:Name="Label1"
                            HorizontalAlignment="Center"
                            Content="Off Duration"

@@ -10,9 +10,6 @@ namespace OpenPixelControl
     {
         private const int LedStrandLen = 50;
 
-        // TODO: get colors for each light from reference images
-        private static readonly Dictionary<char, Pixel> LetterColorMap = new Dictionary<char, Pixel>();
-
         private static readonly Dictionary<char, int> LetterIndexMap = new Dictionary<char, int>
         {
             {'A', 49},
@@ -43,6 +40,11 @@ namespace OpenPixelControl
             {'Z', 24}
         };
 
+        private readonly Pixel[] _lightColors =
+        {
+            Pixel.RedPixel(), Pixel.YellowPixel(), Pixel.GreenPixel(), Pixel.BluePixel()
+        };
+
         private readonly Random _rng = new Random();
 
         private static int GetLetterIndex(char c)
@@ -60,7 +62,8 @@ namespace OpenPixelControl
             {
                 if (i == letterIndex)
                 {
-                    var pixel = Pixel.PixelFromHsv(_rng.NextDouble()*360);
+                    var rand = _rng.Next(4);
+                    var pixel = _lightColors[rand];
                     frame.Add(pixel);
                 }
                 else

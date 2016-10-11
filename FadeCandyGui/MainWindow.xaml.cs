@@ -1,14 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 using OpenPixelControl;
-
 
 namespace FadeCandyGui
 {
@@ -28,7 +25,6 @@ namespace FadeCandyGui
         private const double LedBlurRadius = 5;
         private const double LogoBlurRadius = 20;
 
-
         private readonly BlurEffect _ledBlurEffect;
 
         private readonly LetterWall _letterWall;
@@ -46,6 +42,11 @@ namespace FadeCandyGui
         public MainWindow()
         {
             InitializeComponent();
+
+            //disable message entry until connected
+            MessageTextBox.IsEnabled = false;
+            SendMessageButton.IsEnabled = false;
+            StopButton.IsEnabled = false;
 
             //init text boxes to default server values
             ServerTextBox.Text = "127.0.0.1";
@@ -103,16 +104,6 @@ namespace FadeCandyGui
             }, token);
         }
 
-        private void OnDurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            _onDuration = e.NewValue;
-        }
-
-        private void OffDurationSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            _offDuration = e.NewValue;
-        }
-
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -131,42 +122,37 @@ namespace FadeCandyGui
 
                     //is there a tcp response message I can check?
 
-
                     _opcClient.Server = ServerTextBox.Text;
                     _opcClient.Port = Convert.ToInt32(PortTextBox.Text);
 
-
                     // blink leds on connect
-                    // do in new thread to not block UI
-                    // http://stackoverflow.com/questions/363377/how-do-i-run-a-simple-bit-of-code-in-a-new-thread
-                    var backgroundWorker = new BackgroundWorker();
+                    // use Task to not block UI
 
-                    backgroundWorker.DoWork += delegate
+                    Task.Run(async () =>
                     {
                         _opcClient.SetDitheringAndInterpolation(true);
 
-                        var frame = _opcClient.SingleColorFrame(200, 0, 0);
+                        var animation = new FrameAnimation();
 
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
-                        _opcClient.WriteFrame(frame);
-                        Thread.Sleep(500);
-                        _opcClient.TurnOffAllPixels();
-                        Thread.Sleep(500);
+                        var onFramePixels = _opcClient.SingleColorFrame(200, 0, 0);
+                        var onFrame = new Frame(onFramePixels, 500);
+
+                        var offFramePixels = _opcClient.SingleColorFrame(OpcConstants.DarkPixel);
+                        var offFrame = new Frame(offFramePixels, 500);
+
+                        //fade red in and out 3 times
+                        animation.AddFrame(offFrame);
+                        animation.AddFrame(onFrame);
+                        animation.AddFrame(offFrame);
+                        animation.AddFrame(onFrame);
+                        animation.AddFrame(offFrame);
+                        animation.AddFrame(onFrame);
+                        animation.AddFrame(offFrame);
+
+                        await _opcClient.PlayAnimation(animation);
 
                         _opcClient.SetDitheringAndInterpolation(false);
-                    };
-
-                    backgroundWorker.RunWorkerCompleted += delegate { Debug.WriteLine("Blink done"); };
-                    backgroundWorker.RunWorkerAsync();
+                    });
                 }
 
                 //update UI
@@ -188,7 +174,12 @@ namespace FadeCandyGui
                 //turn off
 
                 //update button text
-                ConnectButton.Content = "Connect";
+                ConnectButton.Content = "Connect";            
+
+                //disable message entry
+                MessageTextBox.IsEnabled = false;
+                SendMessageButton.IsEnabled = false;
+                StopButton.IsEnabled = false;
 
                 //disable server and port text boxes
                 ServerTextBox.IsEnabled = true;
@@ -218,6 +209,12 @@ namespace FadeCandyGui
                 // update button text
                 ConnectButton.Content = "Disconnect";
 
+
+                //enable message entry
+                MessageTextBox.IsEnabled = true;
+                SendMessageButton.IsEnabled = true;
+                StopButton.IsEnabled = true;
+
                 //enable server and port text boxes
                 ServerTextBox.IsEnabled = false;
                 PortTextBox.IsEnabled = false;
@@ -243,10 +240,12 @@ namespace FadeCandyGui
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
-            //cancel current animation thread
-            _cancellationTokenSource.Cancel();
-            //set all leds to off - do it twice to bypass interpolation
-            _opcClient.TurnOffAllPixels();
+            if (_cancellationTokenSource != null && _cancellationTokenSource.Token.CanBeCanceled)
+            {
+                //cancel current animation thread
+                _cancellationTokenSource.Cancel();
+            }
+
             _opcClient.TurnOffAllPixels();
         }
     }

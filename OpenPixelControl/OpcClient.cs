@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace OpenPixelControl
 {
@@ -44,9 +45,25 @@ namespace OpenPixelControl
             SendMessage(message.ToArray());
         }
 
+        public async Task WriteFrame(Frame frame)
+        {
+            WriteFrame(frame.Pixels);
+            await Task.Delay(frame.Delay);
+        }
+
+        public async Task PlayAnimation(FrameAnimation frameAnimation)
+        {
+            foreach (var frame in frameAnimation.Frames)
+            {
+                await WriteFrame(frame);
+            }
+        }
+
         public void TurnOffAllPixels()
         {
             var frame = SingleColorFrame(OpcConstants.DarkPixel);
+            // write twice to bypass interpolation
+            WriteFrame(frame);
             WriteFrame(frame);
         }
 

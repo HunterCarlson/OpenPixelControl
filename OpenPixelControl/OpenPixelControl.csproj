@@ -53,6 +53,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Frame.cs" />
+    <Compile Include="FrameAnimation.cs" />
     <Compile Include="LetterWall.cs" />
     <Compile Include="OpcClient.cs" />
     <Compile Include="OpcConstants.cs" />
