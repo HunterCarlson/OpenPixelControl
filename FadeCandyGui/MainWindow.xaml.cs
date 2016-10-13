@@ -38,23 +38,19 @@ namespace FadeCandyGui
         private bool _prevConnectionState;
         private string _server;
 
+        private readonly LetterWallViewModel model;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            //get the model from the xaml
+            model = DataContext as LetterWallViewModel;
+
             //disable message entry until connected
             MessageTextBox.IsEnabled = false;
             SendMessageButton.IsEnabled = false;
             StopButton.IsEnabled = false;
-
-            //init text boxes to default server values
-            ServerTextBox.Text = "127.0.0.1";
-            PortTextBox.Text = OpcConstants.DefaultPort.ToString();
-
-            // init sliders
-            OnDurationSlider.Value = 1.0;
-            OffDurationSlider.Value = 1.0;
 
             //set opacity on lights to off value
             ConnectionStatusLedImage.Opacity = LedOffOpacity;
@@ -84,16 +80,16 @@ namespace FadeCandyGui
             //http://blog.stephencleary.com/2012/02/async-and-await.html
 
             //get UI values outside of task
-            var message = MessageTextBox.Text.ToUpper();
-            var onDuration = OnDurationSlider.Value*1000;
-            var offDuration = OffDurationSlider.Value*1000;
+            var message = model.Message;
+            var onDuration = model.OnDuration*1000;
+            var offDuration = model.OffDuration*1000;
 
             _cancellationTokenSource = new CancellationTokenSource();
             var token = _cancellationTokenSource.Token;
 
             Task.Run(async () =>
             {
-                foreach (var c in message)
+                foreach (var c in message.ToUpper())
                 {
                     var frame = _letterWall.CreateLetterFrame(c);
                     _opcClient.WriteFrame(frame);
@@ -122,8 +118,8 @@ namespace FadeCandyGui
 
                     //is there a tcp response message I can check?
 
-                    _opcClient.Server = ServerTextBox.Text;
-                    _opcClient.Port = Convert.ToInt32(PortTextBox.Text);
+                    _opcClient.Server = model.OpcServer;
+                    _opcClient.Port = Convert.ToInt32(model.OpcPort);
 
                     // blink leds on connect
                     // use Task to not block UI
@@ -174,7 +170,7 @@ namespace FadeCandyGui
                 //turn off
 
                 //update button text
-                ConnectButton.Content = "Connect";            
+                ConnectButton.Content = "Connect";
 
                 //disable message entry
                 MessageTextBox.IsEnabled = false;
