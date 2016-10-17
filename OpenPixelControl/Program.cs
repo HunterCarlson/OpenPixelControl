@@ -16,44 +16,13 @@ namespace OpenPixelControl
             {
                 var opcClient = new OpcClient();
 
-                BlinkRandomThenBright(opcClient);
+                //var frame = opcClient.SingleColorFrame(Color.DarkBlue);
+                //opcClient.WriteFrame(frame);
+
+                //BlinkRandomThenBright(opcClient);
                 //RgbyColorTest(opcClient);
-                opcClient.SetDitheringAndInterpolation(false);
-
-                //color test
-                //var pixels = new List<Pixel>();
-                //pixels.Add(Pixel.RedPixel());
-                //pixels.Add(Pixel.YellowPixel());
-                //pixels.Add(Pixel.GreenPixel());
-                //pixels.Add(Pixel.BluePixel());
-                //opcClient.WriteFrame(pixels);
-                //Thread.Sleep(5000);
-                //opcClient.TurnOffAllPixels();
-
-
-                // single led chase
-                //init frame
-                opcClient.SetDitheringAndInterpolation(true);
-                var pixels = new Queue<Pixel>();
-                pixels.Enqueue(new Pixel(100, 100, 100));
-                pixels.Enqueue(new Pixel(180, 180, 180));
-                pixels.Enqueue(new Pixel(255, 255, 255));
-                pixels.Enqueue(new Pixel(180, 160, 180));
-                pixels.Enqueue(new Pixel(100, 100, 100));
-                //pad with dark
-                while (pixels.Count < 50)
-                {
-                    pixels.Enqueue(OpcConstants.DarkPixel);
-                }
-                //loop
-                while (true)
-                {
-                    var temp = pixels.Dequeue();
-                    pixels.Enqueue(temp);
-                    opcClient.WriteFrame(pixels.ToList());
-                    Thread.Sleep(200);
-                }
-
+                //SingleLedChase(opcClient, 100);
+                //RainbowCycle(opcClient, 50);
 
                 //wait for socket to open
                 //TODO: there is an open event, wait for the socket to open before sending messages
@@ -145,6 +114,53 @@ namespace OpenPixelControl
             opcClient.WriteFrame(frame);
 
             Thread.Sleep(1000);
+        }
+
+        public static void SingleLedChase(OpcClient opcClient, int frameDelay)
+        {
+            //init frame
+            opcClient.SetDitheringAndInterpolation(true);
+            var pixels = new Queue<Pixel>();
+            pixels.Enqueue(new Pixel(100, 100, 100));
+            pixels.Enqueue(new Pixel(180, 180, 180));
+            pixels.Enqueue(new Pixel(255, 255, 255));
+            pixels.Enqueue(new Pixel(180, 160, 180));
+            pixels.Enqueue(new Pixel(100, 100, 100));
+            //pad with dark
+            while (pixels.Count < 50)
+            {
+                pixels.Enqueue(OpcConstants.DarkPixel);
+            }
+            //loop
+            while (true)
+            {
+                var temp = pixels.Dequeue();
+                pixels.Enqueue(temp);
+                opcClient.WriteFrame(pixels.ToList());
+                Thread.Sleep(frameDelay);
+            }
+        }
+
+        public static void RainbowCycle(OpcClient opcClient, int frameDelay)
+        {
+            //init frame
+            opcClient.SetDitheringAndInterpolation(true);
+            var pixels = new Queue<Pixel>();
+            double hue = 0;
+            for (int i = 0; i < OpcConstants.StrandLength; i++)
+            {
+                Pixel pixel = Pixel.PixelFromHsv(hue);
+                pixels.Enqueue(pixel);
+                hue += 360.0/OpcConstants.StrandLength;
+            }
+            //loop
+            while (true)
+            {
+                var temp = pixels.Dequeue();
+                pixels.Enqueue(temp);
+                opcClient.WriteFrame(pixels.ToList());
+                Thread.Sleep(frameDelay);
+            }
         }
     }
 }
