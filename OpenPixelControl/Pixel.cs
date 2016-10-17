@@ -26,9 +26,9 @@ namespace OpenPixelControl
             Blue = color.B;
         }
 
-        public byte Red { get; }
-        public byte Green { get; }
-        public byte Blue { get; }
+        public byte Red { get; set; }
+        public byte Green { get; set; }
+        public byte Blue { get; set; }
 
         public static Pixel RedPixel()
         {
@@ -98,5 +98,6 @@ namespace OpenPixelControl
                 return Color.FromArgb(255, t, p, v);
             return Color.FromArgb(255, v, p, q);
         }
+
     }
 }

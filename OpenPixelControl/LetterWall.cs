@@ -55,11 +55,14 @@ namespace OpenPixelControl
         public List<Pixel> CreateLetterFrame(char c)
         {
             var frame = new List<Pixel>();
+            int letterIndex;
 
-            var letterIndex = GetLetterIndex(c);
+            if (LetterIndexMap.ContainsKey(c))
+                letterIndex = GetLetterIndex(c);
+            else
+                letterIndex = -1;
 
             foreach (var i in Enumerable.Range(0, LedStrandLen))
-            {
                 if (i == letterIndex)
                 {
                     var rand = _rng.Next(4);
@@ -70,7 +73,6 @@ namespace OpenPixelControl
                 {
                     frame.Add(OpcConstants.DarkPixel);
                 }
-            }
             return frame;
         }
     }
