@@ -137,13 +137,13 @@ namespace FadeCandyGui
                         var offFrame = new Frame(offFramePixels, 500);
 
                         //fade red in and out 3 times
-                        animation.AddFrame(offFrame);
-                        animation.AddFrame(onFrame);
-                        animation.AddFrame(offFrame);
-                        animation.AddFrame(onFrame);
-                        animation.AddFrame(offFrame);
-                        animation.AddFrame(onFrame);
-                        animation.AddFrame(offFrame);
+                        animation.Add(offFrame);
+                        animation.Add(onFrame);
+                        animation.Add(offFrame);
+                        animation.Add(onFrame);
+                        animation.Add(offFrame);
+                        animation.Add(onFrame);
+                        animation.Add(offFrame);
 
                         await _opcClient.PlayAnimation(animation);
 

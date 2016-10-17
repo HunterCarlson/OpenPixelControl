@@ -16,7 +16,7 @@ namespace OpenPixelControl
 
         public List<Frame> Frames { get; set; }
 
-        public void AddFrame(Frame frame)
+        public void Add(Frame frame)
         {
             Frames.Add(frame);
         }

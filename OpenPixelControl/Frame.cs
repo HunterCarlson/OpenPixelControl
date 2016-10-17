@@ -12,10 +12,15 @@ namespace OpenPixelControl
 
         public int Delay { get; set; }
 
-        public Frame(List<Pixel> pixels, int delay)
+        public Frame(List<Pixel> pixels, int delay=0)
         {
             Pixels = pixels;
             Delay = delay;
-        } 
+        }
+
+        public void Add(Pixel pixel)
+        {
+            Pixels.Add(pixel);
+        }
     }
 }
