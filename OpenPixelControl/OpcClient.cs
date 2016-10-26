@@ -191,7 +191,7 @@ namespace OpenPixelControl
             }
         }
 
-        public async void BlinkRandomThenBright()
+        public async Task BlinkRandomThenBright()
         {
             SetDitheringAndInterpolation(true);
 
@@ -250,24 +250,24 @@ namespace OpenPixelControl
             WriteFrame(SingleColorFrame(OpcConstants.DarkPixel));
         }
 
-        public static async void RgbyColorTest(OpcClient opcClient)
+        public async Task RgbyColorTest()
         {
-            opcClient.SetDitheringAndInterpolation(false);
+            SetDitheringAndInterpolation(false);
 
             var frame = new List<Pixel>();
             frame.Add(Pixel.RedPixel());
             frame.Add(Pixel.YellowPixel());
             frame.Add(Pixel.GreenPixel());
             frame.Add(Pixel.BluePixel());
-            opcClient.WriteFrame(frame);
+            WriteFrame(frame);
 
             await Task.Delay(1000);
         }
 
-        public static async void SingleLedChase(OpcClient opcClient, int frameDelay)
+        public async Task SingleLedChase(int frameDelay)
         {
             //init frame
-            opcClient.SetDitheringAndInterpolation(true);
+            SetDitheringAndInterpolation(true);
             var pixels = new Queue<Pixel>();
             pixels.Enqueue(new Pixel(100, 100, 100));
             pixels.Enqueue(new Pixel(180, 180, 180));
@@ -284,15 +284,15 @@ namespace OpenPixelControl
             {
                 var temp = pixels.Dequeue();
                 pixels.Enqueue(temp);
-                opcClient.WriteFrame(pixels.ToList());
+                WriteFrame(pixels.ToList());
                 await Task.Delay(frameDelay);
             }
         }
 
-        public static async void RainbowCycle(OpcClient opcClient, int frameDelay)
+        public async Task RainbowCycle(int frameDelay)
         {
             //init frame
-            opcClient.SetDitheringAndInterpolation(true);
+            SetDitheringAndInterpolation(true);
             var pixels = new Queue<Pixel>();
             double hue = 0;
             for (var i = 0; i < OpcConstants.StrandLength; i++)
@@ -306,7 +306,7 @@ namespace OpenPixelControl
             {
                 var temp = pixels.Dequeue();
                 pixels.Enqueue(temp);
-                opcClient.WriteFrame(pixels.ToList());
+                WriteFrame(pixels.ToList());
                 await Task.Delay(frameDelay);
             }
         }

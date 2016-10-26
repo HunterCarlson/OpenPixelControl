@@ -21,10 +21,13 @@ namespace OpenPixelControl
 
                 //opcClient.BlinkRandomThenBright();
 
-                //BlinkRandomThenBright(opcClient);
+                //opcClient.BlinkRandomThenBright();
                 //RgbyColorTest(opcClient);
                 //SingleLedChase(opcClient, 100);
+                opcClient.SingleLedChase(100);
                 //RainbowCycle(opcClient, 50);
+                //opcClient.RainbowCycle(100);
+
 
                 //wait for socket to open
                 //TODO: there is an open event, wait for the socket to open before sending messages
