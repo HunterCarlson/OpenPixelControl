@@ -24,9 +24,9 @@ namespace OpenPixelControl
                 //opcClient.BlinkRandomThenBright();
                 //RgbyColorTest(opcClient);
                 //SingleLedChase(opcClient, 100);
-                opcClient.SingleLedChase(100);
+                //opcClient.SingleLedChase(100);
                 //RainbowCycle(opcClient, 50);
-                //opcClient.RainbowCycle(100);
+                opcClient.RainbowCycle(100);
 
 
                 //wait for socket to open

@@ -7,7 +7,7 @@
         xmlns:pc="http://schemas.microsoft.com/prototyping/2010/controls"
         Title="MainWindow"
         Width="525"
-        Height="450"
+        Height="550"
         Background="Black"
         mc:Ignorable="d">
     <Window.Resources>
@@ -18,7 +18,8 @@
     </Window.DataContext>
     <Grid>
         <DockPanel LastChildFill="False">
-            <DockPanel x:Name="ImageDockPanel" Margin="0,20,0,0"
+            <DockPanel x:Name="ImageDockPanel"
+                       Margin="0,20,0,0"
                        DockPanel.Dock="Top"
                        LastChildFill="False">
                 <Grid DockPanel.Dock="Top">
@@ -36,20 +37,27 @@
                            Source="Images/Stranger-Things-Logo.png" />
                 </Grid>
             </DockPanel>
-            <DockPanel x:Name="MessageDockPanel" LastChildFill="False" DockPanel.Dock="Top" VerticalAlignment="Center">
-                <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="0">
+            <DockPanel x:Name="MessageDockPanel"
+                       VerticalAlignment="Center"
+                       DockPanel.Dock="Top"
+                       LastChildFill="False">
+                <DockPanel Margin="0"
+                           DockPanel.Dock="Top"
+                           LastChildFill="False">
                     <TextBox x:Name="MessageTextBox"
-                         Width="400"
-                         Margin="0,20,0,0"
-                         HorizontalAlignment="Center"
-                         VerticalAlignment="Center"
-                         Background="#FF101010"
-                         DockPanel.Dock="Top"
-                         FontSize="16"
-                         Foreground="Red"
-                         Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextAlignment="Center"
-                         TextWrapping="Wrap">
+                             Width="400"
+                             Margin="0,20,0,0"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Background="#FF101010"
+                             DockPanel.Dock="Top"
+                             FontSize="16"
+                             Foreground="Red"
+                             Text="{Binding Message,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}"
+                             TextAlignment="Center"
+                             TextWrapping="Wrap">
                         <TextBox.BorderBrush>
                             <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,20">
                                 <GradientStop Offset="0.05" Color="#FFABADB3" />
@@ -63,66 +71,126 @@
                     </TextBox>
                 </DockPanel>
                 <DockPanel Margin="0,10,0,0"
+                           HorizontalAlignment="Center"
+                           DockPanel.Dock="Top"
+                           LastChildFill="False">
+                    <Button x:Name="SendMessageButton"
+                            Margin="1,1,10,1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="#FF101010"
+                            BorderThickness="0"
+                            Click="SendMessageButton_Click"
+                            Content="Send Message"
+                            Foreground="#FFB4B4B4"
+                            Padding="3,2,3,3"
+                            d:LayoutOverrides="TopPosition, BottomPosition" />
+                    <Button x:Name="StopButton"
+                            Margin="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Black"
+                            Click="stopButton_Click"
+                            Content="Stop"
+                            Foreground="#FFB4B4B4"
+                            Padding="3,2,3,3" />
+                </DockPanel>
+                <DockPanel Width="481.6"
+                           Margin="0,20,0,0"
+                           DockPanel.Dock="Top"
+                           LastChildFill="False">
+                    <DockPanel Margin="50,0,0,0" LastChildFill="False">
+                        <TextBox x:Name="OnDurationTextBox"
+                                 Width="88"
+                                 Height="22.637"
+                                 HorizontalAlignment="Center"
+                                 Background="#FF101010"
+                                 BorderBrush="#FF707070"
+                                 DockPanel.Dock="Top"
+                                 Foreground="#FFB4B4B4"
+                                 MaxLength="4"
+                                 Text="{Binding OnDuration,
+                                                Converter={StaticResource TwoDecimalDoubleConverter},
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 TextAlignment="Center"
+                                 TextWrapping="Wrap" />
+                        <Slider x:Name="OnDurationSlider"
+                                Width="150"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                BorderThickness="0,5,0,0"
+                                DockPanel.Dock="Top"
+                                IsSnapToTickEnabled="True"
+                                Maximum="5"
+                                TickFrequency="0.01"
+                                Value="{Binding OnDuration,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}" />
+                        <Label x:Name="Label"
+                               HorizontalAlignment="Center"
+                               Content="On Duration"
+                               DockPanel.Dock="Top"
+                               Foreground="#FFB4B4B4" />
+                    </DockPanel>
+                    <DockPanel Margin="0,0,50,0"
+                               DockPanel.Dock="Right"
+                               LastChildFill="False">
+                        <TextBox x:Name="TextBox2"
+                                 Width="88"
+                                 Height="23"
+                                 HorizontalAlignment="Center"
+                                 Background="#FF101010"
+                                 BorderBrush="#FF707070"
+                                 DockPanel.Dock="Top"
+                                 Foreground="#FFB4B4B4"
+                                 MaxLength="4"
+                                 Text="{Binding OffDuration,
+                                                Converter={StaticResource TwoDecimalDoubleConverter},
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                 TextAlignment="Center"
+                                 TextWrapping="Wrap" />
+                        <Slider x:Name="OffDurationSlider"
+                                Width="150"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                BorderThickness="0,5,0,0"
+                                DockPanel.Dock="Top"
+                                IsSnapToTickEnabled="True"
+                                Maximum="5"
+                                TickFrequency="0.01"
+                                Value="{Binding OffDuration,
+                                                Mode=TwoWay,
+                                                UpdateSourceTrigger=PropertyChanged}"
+                                d:LayoutOverrides="LeftPosition, RightPosition" />
+                        <Label x:Name="Label1"
+                               HorizontalAlignment="Center"
+                               Content="Off Duration"
+                               DockPanel.Dock="Top"
+                               Foreground="#FFB4B4B4" />
+                    </DockPanel>
+                </DockPanel>
+            </DockPanel>
+            <DockPanel x:Name="ChaseDockPanel"
+                       Margin="0,20,0,0"
                        HorizontalAlignment="Center"
                        DockPanel.Dock="Top"
                        LastChildFill="False">
-                    <Button x:Name="SendMessageButton"
-                        Margin="1,1,10,1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Background="#FF101010"
-                        BorderThickness="0"
-                        Click="SendMessageButton_Click"
-                        Content="Send Message"
-                        Foreground="#FFB4B4B4"
-                        Padding="3,2,3,3"
-                        d:LayoutOverrides="TopPosition, BottomPosition" />
-                    <Button x:Name="StopButton"
-                        Margin="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Background="Black"
-                        Click="stopButton_Click"
-                        Content="Stop"
-                        Foreground="#FFB4B4B4"
-                        Padding="3,2,3,3" />
-                </DockPanel>
-                <DockPanel Margin="0,20,0,0"
-                       DockPanel.Dock="Top"
-                       LastChildFill="False" Width="481.6">
-                    <DockPanel Margin="50,0,0,0" LastChildFill="False">
-                        <TextBox x:Name="OnDurationTextBox"
-                             Width="88"
-                             Height="22.637"
-                             HorizontalAlignment="Center"
-                             Background="#FF101010"
-                             BorderBrush="#FF707070"
-                             DockPanel.Dock="Top"
-                             Foreground="#FFB4B4B4"
-                             MaxLength="4"
-                             Text="{Binding OnDuration, Converter={StaticResource TwoDecimalDoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             TextAlignment="Center"
-                             TextWrapping="Wrap" />
-                        <Slider x:Name="OnDurationSlider"
-                            Width="150"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            BorderThickness="0,5,0,0"
-                            DockPanel.Dock="Top"
-                            IsSnapToTickEnabled="True"
-                            Maximum="5"
-                            TickFrequency="0.01"
-                            Value="{Binding OnDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <Label x:Name="Label"
-                           HorizontalAlignment="Center"
-                           Content="On Duration"
-                           DockPanel.Dock="Top"
-                           Foreground="#FFB4B4B4" />
-                    </DockPanel>
-                    <DockPanel Margin="0,0,50,0"
-                           DockPanel.Dock="Right"
+                <DockPanel HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
                            LastChildFill="False">
-                        <TextBox x:Name="TextBox2"
+                    <Button x:Name="button"
+                            Width="75"
+                            Background="#FF101010"
+                            Content="Chase"
+                            Foreground="#FFB4B4B4" />
+                </DockPanel>
+                <DockPanel Margin="25,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           LastChildFill="False">
+                    <TextBox x:Name="textBox"
                              Width="88"
                              Height="23"
                              HorizontalAlignment="Center"
@@ -130,33 +198,44 @@
                              BorderBrush="#FF707070"
                              DockPanel.Dock="Top"
                              Foreground="#FFB4B4B4"
-                             MaxLength="4"
-                             Text="{Binding OffDuration, Converter={StaticResource TwoDecimalDoubleConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Grid.IsSharedSizeScope="True"
+                             Text="TextBox"
                              TextAlignment="Center"
                              TextWrapping="Wrap" />
-                        <Slider x:Name="OffDurationSlider"
+                    <Slider x:Name="slider"
                             Width="150"
+                            Margin="0"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
+                            VerticalAlignment="Center"
                             BorderThickness="0,5,0,0"
-                            DockPanel.Dock="Top"
-                            IsSnapToTickEnabled="True"
-                            Maximum="5"
-                            TickFrequency="0.01"
-                            Value="{Binding OffDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            d:LayoutOverrides="LeftPosition, RightPosition" />
-                        <Label x:Name="Label1"
+                            DockPanel.Dock="Top" />
+                    <Label x:Name="label2"
+                           Width="75"
                            HorizontalAlignment="Center"
-                           Content="Off Duration"
+                           VerticalAlignment="Center"
+                           Content="Chase Delay"
                            DockPanel.Dock="Top"
                            Foreground="#FFB4B4B4" />
-                    </DockPanel>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           LastChildFill="False">
+                    <Button x:Name="button1"
+                            Width="75"
+                            Background="#FF101010"
+                            Content="Stop"
+                            Foreground="#FFB4B4B4" />
                 </DockPanel>
             </DockPanel>
-            <DockPanel x:Name="ServerDockPanel" Margin="0,20,0,0"
+            <DockPanel x:Name="ServerDockPanel"
+                       Margin="0,30,0,0"
+                       HorizontalAlignment="Center"
                        DockPanel.Dock="Top"
-                       LastChildFill="False" HorizontalAlignment="Center">
-                <DockPanel Margin="0,0,50,0" LastChildFill="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                       LastChildFill="False">
+                <DockPanel Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           LastChildFill="False">
                     <TextBox x:Name="ServerTextBox"
                              Width="120"
                              Height="23"
@@ -175,8 +254,9 @@
                            DockPanel.Dock="Top"
                            Foreground="#FFB4B4B4" />
                 </DockPanel>
-                <DockPanel Margin="0"
-                           HorizontalAlignment="Center" VerticalAlignment="Center">
+                <DockPanel Margin="50,0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
                     <Image x:Name="ConnectionStatusLedImage"
                            Width="20"
                            Height="20"
@@ -194,8 +274,10 @@
                             Foreground="#FFB4B4B4"
                             Padding="3" />
                 </DockPanel>
-                <DockPanel Margin="50,0,0,0"
-                           LastChildFill="False" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <DockPanel Margin="0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           LastChildFill="False">
                     <TextBox x:Name="PortTextBox"
                              Width="120"
                              Height="23"
