@@ -9,37 +9,21 @@ namespace OpenPixelControl
 {
     public class OpcClient
     {
-        public OpcClient(string server = "127.0.0.1", int port = OpcConstants.DefaultPort)
+        public OpcClient(string server = "127.0.0.1", int port = OpcConstants.DefaultPort, PixelOrder pixelOrder = PixelOrder.GRB)
         {
             Server = server;
             Port = port;
+            PixelOrder = pixelOrder;
         }
 
         public string Server { get; set; }
         public int Port { get; set; }
+        public PixelOrder PixelOrder { get; set; }
 
         public void WriteFrame(List<Pixel> pixels, int channel = 0)
         {
-            var lenHighByte = pixels.Count*3/256;
-            var lenLowByte = pixels.Count*3%256;
-
-            var message = new List<byte>();
-
-            // build header
-            message.Add((byte) channel);
-            message.Add(0x00);
-            message.Add((byte) lenHighByte);
-            message.Add((byte) lenLowByte);
-
-            // add pixel data
-            foreach (var pixel in pixels)
-            {
-                // bad string of LEDs or is the data swapped???
-                // shoud be R G B not G R B
-                message.Add(pixel.Green);
-                message.Add(pixel.Red);
-                message.Add(pixel.Blue);
-            }
+            // generate message
+            var message = MessageGenerator.Generate(pixels, channel, PixelOrder);
 
             // send pixel data
             SendMessage(message.ToArray());
