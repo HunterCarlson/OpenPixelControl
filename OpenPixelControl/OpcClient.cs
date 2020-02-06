@@ -34,10 +34,8 @@ namespace OpenPixelControl
             // add pixel data
             foreach (var pixel in pixels)
             {
-                // bad string of LEDs or is the data swapped???
-                // shoud be R G B not G R B
-                message.Add(pixel.Green);
                 message.Add(pixel.Red);
+                message.Add(pixel.Green);
                 message.Add(pixel.Blue);
             }
 
